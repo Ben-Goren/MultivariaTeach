@@ -67,7 +67,7 @@ While you are welcome to construct all four matrices by hand, MultivariaTeach pr
 First, as usual, make sure you load the package at the top of your Python file:
 
 ```python
-import MultivariaTeach as mt
+import multivariateach as mt
 ```
 
 This would typically be included with the lines above importing `pandas` and `sklearn`. We can now create our $\mathbf{X}$ and $\mathbf{Y}$ matrices:
