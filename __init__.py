@@ -1,1 +1,1 @@
-from .multivariateach.multivariateach import *
+from .multivariateach import *
