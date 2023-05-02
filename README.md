@@ -107,7 +107,7 @@ Unlike with most other software, you are not presented with a pretty-formatted t
 import numpy as np
 import pandas as pd
 from sklearn import datasets
-import MultivariaTeach as mt
+import multivariateach as mt
 
 iris = datasets.load_iris() # Fisher's 1936 flower data
 
