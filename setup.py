@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="MultivariaTeach",
-    version="0.1.7",
+    version="0.1.8",
     description="A collection of tools intended for students of multivariate analysis",
     long_description=open("README.md", "r").read(),
     long_description_content_type="text/markdown",
