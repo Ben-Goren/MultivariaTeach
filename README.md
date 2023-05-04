@@ -121,10 +121,10 @@ M = np.eye(Y.shape[1])
 
 results = mt.run_manova(X, Y, C, M)
 
-print("beta_hat: ", results.beta_hat)
-print("E: ", results.E)
-print("B: ", results.B)
-print("H: ", results.H)
+print("beta_hat:\n", results.beta_hat)
+print("E:\n", results.E)
+print("B:\n", results.B)
+print("H:\n", results.H)
 print("wilks_lambda: ", results.wilks_lambda.statistic, results.wilks_lambda.F, results.wilks_lambda.df_n, results.wilks_lambda.df_d, results.wilks_lambda.p_value)
 print("pillais_trace: ", results.pillais_trace.statistic, results.pillais_trace.F, results.pillais_trace.df_n, results.pillais_trace.df_d, results.pillais_trace.p_value)
 print("hotelling_lawley_trace: ", results.hotelling_lawley_trace.statistic, results.hotelling_lawley_trace.F, results.hotelling_lawley_trace.df_n, results.hotelling_lawley_trace.df_d, results.hotelling_lawley_trace.p_value)
@@ -134,19 +134,23 @@ print("roys_largest_root: ", results.roys_largest_root.statistic, results.roys_l
 This will create the following output:
 
 ```[text]
-beta_hat:  [[ 4.3825  2.293   2.8185  0.8995]
+beta_hat:
+ [[ 4.3825  2.293   2.8185  0.8995]
  [ 0.6235  1.135  -1.3565 -0.6535]
  [ 1.5535  0.477   1.4415  0.4265]
  [ 2.2055  0.681   2.7335  1.1265]]
-E:  [[38.9562 13.63   24.6246  5.645 ]
+E:
+ [[38.9562 13.63   24.6246  5.645 ]
  [13.63   16.962   8.1208  4.8084]
  [24.6246  8.1208 27.2226  6.2718]
  [ 5.645   4.8084  6.2718  6.1566]]
-B:  [[ 63.21213333 -19.95266667 165.2484      71.27933333]
+B:
+ [[ 63.21213333 -19.95266667 165.2484      71.27933333]
  [-19.95266667  11.34493333 -57.2396     -22.93266667]
  [165.2484     -57.2396     437.1028     186.774     ]
  [ 71.27933333 -22.93266667 186.774       80.41333333]]
-H:  [[ 63.21213333 -19.95266667 165.2484      71.27933333]
+H:
+ [[ 63.21213333 -19.95266667 165.2484      71.27933333]
  [-19.95266667  11.34493333 -57.2396     -22.93266667]
  [165.2484     -57.2396     437.1028     186.774     ]
  [ 71.27933333 -22.93266667 186.774       80.41333333]]
@@ -359,7 +363,7 @@ First, as we will be directly computing the $p$-value towards the end, be sure t
 import scipy
 ```
 
-Assuming you have immediately previously performed the above calculation of $\epsilon$, he univariate test may be performed with:
+Assuming you have immediately previously performed the above calculation of $\epsilon$, the univariate test may be performed with:
 
 ```python
 Y_1 = Y[:, 0].reshape(-1, 1) # Note that the first column is index zero.
@@ -417,8 +421,6 @@ S_pooled:
  [ 2.601      -0.67286027  6.36062192  2.64446301]
  [ 1.05375799 -0.24827763  2.64446301  1.1858895 ]]
 ```
-
-
 
 #### Individual test statistic calculations
 
