@@ -208,7 +208,7 @@ def mauchly(X, Y):
     Y: data (rows must match X)
     """
 
-    n = X.shape[1]
+    n = Y.shape[1]
     degree = n - 1
     M = orthopolynomial_contrasts(n, degree)
     S_p = calculate_pooled_covariance_matrix(X, Y)
