@@ -1,0 +1,12 @@
+LICENSE
+README.md
+setup.py
+MultivariaTeach.egg-info/PKG-INFO
+MultivariaTeach.egg-info/SOURCES.txt
+MultivariaTeach.egg-info/dependency_links.txt
+MultivariaTeach.egg-info/requires.txt
+MultivariaTeach.egg-info/top_level.txt
+multivariateach/__init__.py
+multivariateach/multivariateach.py
+tests/__init__.py
+tests/test_multivariteach.py

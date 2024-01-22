@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from sklearn import datasets
-import multivariateach as mt
+import MultivariaTeach as mt
 
 def test_manova_skulls():
     """
@@ -11,10 +11,21 @@ def test_manova_skulls():
 
     https://documentation.sas.com/doc/en/statcdc/14.2/statug/statug_introreg_sect038.htm
 
+    Note that there appears to be a discrepancy between the math
+    given for the degrees of freedom for the Hotelling-Lawley
+    Trace and those calculated by SAS. The code here follows the
+    specification; as such, the p-value we calculate also does not
+    match that given by SAS.
+
+    wilks_lambda:  0.6014366117459445 0.7718711213142819 6 16 0.6031780610955103
+    pillais_trace:  0.44702843282944915 0.8635607546452049 6.0 18.0 0.5397192820161092
+    hotelling_lawley_trace:  0.5821034783072931 0.6791207246918419 6.0 14.0 0.6692250334711667
+    roys_largest_root:  0.35530889933704185 1.0659266980111255 3 9 0.7866463340171838
+
     """
 
-    X, Y, L, M = skulls()
-    results = mt.run_manova(X, Y, L, M)
+    X, Y, C, M = skulls()
+    results = mt.run_manova(X, Y, C, M)
 
     expected_wilks_lambda = 0.60143661
     expected_pillais_trace = 0.44702843
@@ -76,10 +87,15 @@ proc glm data=iris;
 run;
 quit;
 
+    wilks_lambda:  0.023438630650877965 199.14534354008606 8 288 1.3650058325882981e-112
+    pillais_trace:  1.191898825041458 53.466488784612224 8.0 290.0 9.74216271945252e-53
+    hotelling_lawley_trace:  32.4773202409019 580.5320993061215 8.0 286.0 6.436176201217028e-172
+    roys_largest_root:  32.19192919827884 1166.957433437608 4 145 3.42202725324015e-19
+
     """
 
-    X, Y, L, M = iris()
-    results = mt.run_manova(X, Y, L, M)
+    X, Y, C, M = iris()
+    results = mt.run_manova(X, Y, C, M)
 
     expected_wilks_lambda = 0.023438630650877965
     expected_pillais_trace = 1.191898825041458
@@ -94,14 +110,17 @@ quit;
 
 def test_box_m_iris():
     """
-    We check Box's M test with the Iris data.
+    Box's M:  1109.99280993386
+    Chi-Squared statistic:  1066.7005733559406
+    Degrees of Freedom:  20.0
+    p-value:  0.0
     """
 
     X, Y, _, _ = iris()
     results = mt.perform_box_m_test(X, Y)
 
-    expected_statistic = 146.6632492125118
-    expected_chi2 = 140.94304992349774
+    expected_statistic = 1109.99280993386
+    expected_chi2 = 1066.7005733559406
     expected_df = 20
     expected_p_value = 0
 
@@ -112,13 +131,16 @@ def test_box_m_iris():
 
 def test_mauchly_iris():
     """
-    Mauchly's test for sphericity, again with the Iris data.
+    Mauchly:  0.08705356910738687
+    Chi-Squared statistic:  360.62415882399614
+    Degrees of Freedom:  5.0
+    p-value:  0.0
     """
     X, Y, _, _ = iris()
     results = mt.mauchly(X, Y)
 
-    expected_statistic = 0.5581441308964978
-    expected_chi2 = 84.97617263316313
+    expected_statistic = 0.08705356910738687
+    expected_chi2 = 360.62415882399614
     expected_df = 5
     expected_p_value = 0
 
@@ -127,14 +149,12 @@ def test_mauchly_iris():
     assert results.df        == pytest.approx(expected_df, rel = 1e-6)
     assert results.p_value   == pytest.approx(expected_p_value, rel = 1e-6)
 
-def test_greenhouse_geisser_iris():
+def test_grenhouse_geisser_iris():
 
     X, Y, _, _ = iris()
-    levels = np.array(np.arange(Y.shape[1])) + 1
-    degree = Y.shape[1] - 1
-    M = mt.create_orthopolynomial_contrasts(levels, degree)
+    M = mt.orthopolynomial_contrasts(X.shape[1], 3)
 
-    epsilon = mt.greenhouse_geisser_correction(X, Y, M)
+    epsilon = mt.greenhouse_geisser_correction(Y, M)
 
     expected_epsilon = 360.62415882399614
 
@@ -163,10 +183,10 @@ def skulls():
 
     X = mt.create_design_matrix(data, 'Loc')
     Y = mt.create_response_matrix(data, ['Basal', 'Occ', 'Max'])
-    L = mt.create_type_iii_hypothesis_contrast(X)
+    C = mt.create_contrast_type_iii(X)
     M = np.eye(Y.shape[1])
 
-    return X, Y, L, M
+    return X, Y, C, M
 
 def iris():
     iris = datasets.load_iris()
@@ -177,7 +197,7 @@ def iris():
     X = mt.create_design_matrix(data, 'group')
     Y = mt.create_response_matrix(data, ['x1', 'x2', 'x3', 'x4'])
 
-    L = mt.create_type_iii_hypothesis_contrast(X)
+    C = mt.create_contrast_type_iii(X)
     M = np.eye(Y.shape[1])
 
-    return X, Y, L, M
+    return X, Y, C, M
